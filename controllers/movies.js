@@ -38,7 +38,7 @@ module.exports.createMovie = (req, res, next) => {
 
   const ownerId = req.user._id;
 
-  Movie.Create({
+  Movie.create({
     country,
     director,
     duration,
