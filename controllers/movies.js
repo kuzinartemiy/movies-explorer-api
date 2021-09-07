@@ -8,7 +8,9 @@ const {
 } = require('../errors/errors');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const ownerId = req.user._id;
+
+  Movie.find({ owner: ownerId })
 
     .then((movies) => {
       if (!movies) {
@@ -71,7 +73,7 @@ module.exports.deleteMovie = (req, res, next) => {
 
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError({ message: 'Фильм с указанным _id не найден.' });
+        throw new NotFoundError('Фильм с указанным _id не найден.');
       }
 
       const ownerId = movie.owner.toString();
