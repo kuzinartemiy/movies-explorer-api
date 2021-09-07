@@ -8,24 +8,9 @@ const {
   UnauthorizedError, // 401
   NotFoundError, // 404
   ConflictError, // 409
-  ServerError, // 500
 } = require('../errors/errors');
 
 const User = require('../models/user');
-
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
-
-    .then((users) => {
-      if (!users) {
-        throw new ServerError({ message: 'Произошла ошибка при получении списка пользователей.' });
-      }
-
-      res.send(users);
-    })
-
-    .catch(next);
-};
 
 module.exports.getAuthorizedUser = (req, res, next) => {
   const userId = req.user._id;
