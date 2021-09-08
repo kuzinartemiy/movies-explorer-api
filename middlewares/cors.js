@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://kuzinartemiy.nomoredomains.monster',
-  'http://kuzinartemiy.nomoredomains.monster',
+  'https://kuzindiploma.nomoredomains.club',
+  'http://kuzindiploma.nomoredomains.club',
   'http://localhost:3000',
 ];
 
