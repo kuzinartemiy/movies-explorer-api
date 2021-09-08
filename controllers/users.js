@@ -32,17 +32,26 @@ module.exports.updateUser = (req, res, next) => {
   const { name, email } = req.body;
   const id = req.user._id;
 
-  User.findByIdAndUpdate(
-    { _id: id },
-    { name, email },
-    { new: true },
-  )
+  User.findOne({ email })
     .then((user) => {
-      if (!user) {
-        throw new BadRequestError('Пользователь по указанному _id не найден.');
+      if (user) {
+        throw new ConflictError('Пользователь с таким email уже зарегистрирован.');
       }
 
-      res.send(user);
+      User.findByIdAndUpdate(
+        { _id: id },
+        { name, email },
+        { new: true },
+      )
+        .then((userToUpdate) => {
+          if (!userToUpdate) {
+            throw new BadRequestError('Пользователь по указанному _id не найден.');
+          }
+
+          res.send(userToUpdate);
+        })
+
+        .catch(next);
     })
 
     .catch(next);
