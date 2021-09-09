@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { updateUserValidation } = require('../middlewares/validation');
+const { updateUserValidation } = require('../middlewares/validations');
 const {
   updateUser,
   getAuthorizedUser,

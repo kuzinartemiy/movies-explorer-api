@@ -3,12 +3,10 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const {
-  BadRequestError, // 400
-  UnauthorizedError, // 401
-  NotFoundError, // 404
-  ConflictError, // 409
-} = require('../errors/errors');
+const { BadRequestError } = require('../errors/BadRequestError');
+const { UnauthorizedError } = require('../errors/UnauthorizedError');
+const { NotFoundError } = require('../errors/NotFoundError');
+const { ConflictError } = require('../errors/ConflictError');
 
 const User = require('../models/user');
 
@@ -60,10 +58,6 @@ module.exports.updateUser = (req, res, next) => {
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
 
-  if (!name || !password || !email) {
-    throw new BadRequestError('Email, пароль или имя не могут быть пустыми.');
-  }
-
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -95,10 +89,6 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    throw new BadRequestError('Email или пароль не могут быть пустыми.');
-  }
 
   User.findOne({ email })
     .then((user) => {

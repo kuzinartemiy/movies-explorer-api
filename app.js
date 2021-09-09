@@ -11,11 +11,13 @@ const { errorHandler } = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { cors } = require('./middlewares/cors');
 const { limiter } = require('./middlewares/rateLimit');
-const { NotFoundError } = require('./errors/errors');
 
 const routes = require('./routes/index');
 
-const { PORT = 3000 } = process.env;
+const {
+  PORT = 3000,
+  MONGO_URL = 'mongodb://localhost:27017/moviesdb',
+} = process.env;
 
 const app = express();
 
@@ -28,16 +30,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 app.use(routes);
-
-app.use(() => {
-  throw new NotFoundError('404 Error');
-});
 
 app.use(errorLogger);
 app.use(errors());

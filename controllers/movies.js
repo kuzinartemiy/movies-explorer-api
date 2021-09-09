@@ -1,11 +1,8 @@
 const Movie = require('../models/movie');
 
-const {
-  BadRequestError, // 400
-  ForbiddenError, // 403
-  NotFoundError, // 404
-  ServerError, // 500
-} = require('../errors/errors');
+const { BadRequestError } = require('../errors/BadRequestError');
+const { ForbiddenError } = require('../errors/ForbiddenError');
+const { NotFoundError } = require('../errors/NotFoundError');
 
 module.exports.getMovies = (req, res, next) => {
   const ownerId = req.user._id;
@@ -13,8 +10,8 @@ module.exports.getMovies = (req, res, next) => {
   Movie.find({ owner: ownerId })
 
     .then((movies) => {
-      if (!movies) {
-        throw new ServerError({ message: 'Произошла ошибка при получении списка фильмов.' });
+      if (movies.length === 0) {
+        throw new NotFoundError('Список фильмов пуст.');
       }
 
       res.send(movies);
@@ -56,7 +53,7 @@ module.exports.createMovie = (req, res, next) => {
   })
     .then((movie) => {
       if (!movie) {
-        throw new BadRequestError({ message: 'Переданы некорректные данные при создании фильма.' });
+        throw new BadRequestError('Переданы некорректные данные при создании фильма.');
       }
 
       res.send(movie);
