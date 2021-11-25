@@ -2,6 +2,8 @@
 
 # Дипломный проект Movies Explorer API
 
+Бэкенд для проекта Movies Explorer.
+
 ## Директории
 
 `/routes` — папка с файлами роутера  
